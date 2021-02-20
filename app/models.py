@@ -12,7 +12,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class Learn(BaseModel):
+class Lesson(BaseModel):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, blank=True, unique=True)
     instruction = models.TextField()
@@ -31,11 +31,11 @@ class Learn(BaseModel):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = unique_slug_generator(self)
-        super(Learn, self).save(*args, **kwargs)
+        super(Lesson, self).save(*args, **kwargs)
 
 
 class ExpectedAnswer(BaseModel):
-    learn = models.ForeignKey(Learn, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     expected_code = models.TextField(blank=True)
     expected_result = models.TextField()
 

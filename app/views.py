@@ -7,26 +7,26 @@ from django.views.generic import (
     ListView
 )
 
-from app.models import Learn
+from app.models import Lesson
 
 
-class LearnListView(ListView):
+class LessonListView(ListView):
     template_name = 'index.html'
-    context_object_name = 'learns'
-    queryset = Learn.objects.active()
+    context_object_name = 'lessons'
+    queryset = Lesson.objects.active()
 
 
-class LearnDetailView(DetailView):
-    model = Learn
-    template_name = 'learn.html'
-    context_object_name = 'learn'
+class LessonDetailView(DetailView):
+    model = Lesson
+    template_name = 'lesson.html'
+    context_object_name = 'lesson'
 
 
 class SubmitAnswerView(View):
 
     def post(self, request, course_slug, slug):
         form_data = json.loads(request.body.decode('utf-8').replace("'", '"'))
-        # expected_code = Learn.objects.filter(slug=slug).first().expectedanswer_set.first().expected_code
+        # expected_code = Lesson.objects.filter(slug=slug).first().expectedanswer_set.first().expected_code
 
         response_data = {
             'data': form_data,

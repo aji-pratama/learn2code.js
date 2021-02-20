@@ -18,12 +18,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from app.views import LearnListView, LearnDetailView, SubmitAnswerView
+from app.views import LessonListView, LessonDetailView, SubmitAnswerView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LearnListView.as_view(), name='learn_list'),
-    path('learn/<slug>/', LearnDetailView.as_view(), name='learn_detail'),
+    path('', LessonListView.as_view(), name='learn_list'),
+    path('learn/<slug>/', LessonDetailView.as_view(), name='learn_detail'),
     path('learn/<slug>/submit-answer', SubmitAnswerView.as_view(), name='submit_answer'),
 ]
 
