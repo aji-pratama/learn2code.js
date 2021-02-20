@@ -1,0 +1,5 @@
+db.sqlite3
+__pycache__
+.python-version
+.vscode
+.DS_Store
