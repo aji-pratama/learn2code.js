@@ -2,13 +2,22 @@
 
 
 {% block content %}
-<h2> This is Learn Page of CodeLearn</h2>
-
-{{ learn.instruction }}
-
+<div class="row" id="id-answer">
+    <div class="col-md-4 px-4 scrollable">
+        <div class="container py-2">
+            {{ lesson.instruction|safe }}
+        </div>
+    </div>
+    <div class="col-md-5 code-section">
+        <textarea id="id-codeeditor" height="1000px" v-model="answerCode"></textarea>
+        <button v-on:click="submitAnswer()" class="btn btn-primary">RUN</button>
+    </div>
+    <div class="col-md-3 px-4">
+        answerResult 
+    </div>
+</div>
 {% endblock content %}
 
 
 {% block extra_scripts %}
-
 {% endblock extra_scripts %}
