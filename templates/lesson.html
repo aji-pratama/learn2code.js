@@ -1,23 +1,28 @@
 {% extends "layout.html" %}
 
-
 {% block content %}
-<div class="row" id="id-answer">
-    <div class="col-md-4 px-4 scrollable">
-        <div class="container py-2">
-            {{ lesson.instruction|safe }}
+<section id="id-lesson">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 p-0">
+                <div class="navbar bg-default p-2">
+                    <h3 class="text-light">Instruction</h3>
+                </div>
+                <div class="container p-2">
+                    {{ lesson.instruction|safe }}
+                </div>
+            </div>
+            <div class="col-md-5 p-0">
+                <textarea id="id-codeeditor" height="1000px" v-model="answerCode"></textarea>
+                <button v-on:click="submitAnswer()" class="btn btn-primary">RUN</button>
+            </div>
+            <div class="col-md-3 p-0">
+                answerResult 
+            </div>
         </div>
     </div>
-    <div class="col-md-5 code-section">
-        <textarea id="id-codeeditor" height="1000px" v-model="answerCode"></textarea>
-        <button v-on:click="submitAnswer()" class="btn btn-primary">RUN</button>
-    </div>
-    <div class="col-md-3 px-4">
-        answerResult 
-    </div>
-</div>
+</section>
 {% endblock content %}
-
 
 {% block extra_scripts %}
 {% endblock extra_scripts %}
