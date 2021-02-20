@@ -24,12 +24,9 @@ class LessonDetailView(DetailView):
 
 class SubmitAnswerView(View):
 
-    def post(self, request, course_slug, slug):
-        form_data = json.loads(request.body.decode('utf-8').replace("'", '"'))
-        # expected_code = Lesson.objects.filter(slug=slug).first().expectedanswer_set.first().expected_code
-
+    def post(self, request, slug):
+        form_data = json.loads(request.body)
         response_data = {
             'data': form_data,
         }
-
         return JsonResponse(response_data)

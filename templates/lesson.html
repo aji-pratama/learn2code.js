@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 
+
 {% block content %}
 <section id="id-lesson">
     <div class="container-fluid">
@@ -17,12 +18,49 @@
                 <button v-on:click="submitAnswer()" class="btn btn-primary">RUN</button>
             </div>
             <div class="col-md-3 p-0">
-                answerResult 
+                [% answerResult %]
             </div>
         </div>
     </div>
 </section>
 {% endblock content %}
 
+
 {% block extra_scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>  
+new Vue({
+    el: '#id-lesson',
+    delimiters: ['[%', '%]'],
+    data () {
+        return {
+            answerCode: `{{ lesson.initial_code|safe }}`,
+            answerResult: {}
+        }
+    },
+    methods: {
+        submitAnswer: function() {
+            let requestUrl = `{% url 'submit_answer' lesson.slug %}`
+            let requestData = {
+                'answer_code': this.answerCode
+            }
+            let config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                }
+            }
+
+            axios.post(requestUrl, requestData, config)
+            .then((response) => {
+                this.answerResult = response.data
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+    },
+})
+</script>
 {% endblock extra_scripts %}
