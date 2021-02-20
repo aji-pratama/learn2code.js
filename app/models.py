@@ -17,7 +17,7 @@ class Learn(BaseModel):
     slug = models.SlugField(max_length=255, blank=True, unique=True)
     instruction = models.TextField()
     initial_code = models.TextField(blank=True)
-    
+
     display_order = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)
     objects = ActiveManagerInteface()

@@ -26,17 +26,10 @@ class SubmitAnswerView(View):
 
     def post(self, request, course_slug, slug):
         form_data = json.loads(request.body.decode('utf-8').replace("'", '"'))
-        expected_code = Learn.objects.filter(slug=slug).first().expectedanswer_set.first().expected_code
-        get_answer_code = sandbox(form_data['answer_code'])
-        get_expected_code = sandbox(expected_code)
-
-        is_correct = False
-        if get_answer_code == get_expected_code:
-            is_correct = True
+        # expected_code = Learn.objects.filter(slug=slug).first().expectedanswer_set.first().expected_code
 
         response_data = {
-            'is_correct': is_correct,
-            'answer_result': get_answer_code['result']
+            'data': form_data,
         }
 
         return JsonResponse(response_data)
