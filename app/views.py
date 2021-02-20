@@ -8,6 +8,7 @@ from django.views.generic import (
 )
 
 from app.models import Lesson
+from app.intrepreter import sandbox
 
 
 class LessonListView(ListView):
@@ -26,7 +27,8 @@ class SubmitAnswerView(View):
 
     def post(self, request, slug):
         form_data = json.loads(request.body)
+        result_answer_code = sandbox(form_data['answer_code'])
         response_data = {
-            'data': form_data,
+            'result': result_answer_code
         }
         return JsonResponse(response_data)

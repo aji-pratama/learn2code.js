@@ -1,7 +1,8 @@
 from django import forms
-from app.models import Lesson
 
 from tinymce.widgets import TinyMCE
+
+from app.models import Lesson
 
 
 class LessonAdminForm(forms.ModelForm):
