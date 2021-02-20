@@ -29,8 +29,12 @@ class Lesson(BaseModel):
         return self.title
 
     def save(self, *args, **kwargs):
+        if self.display_order == 0:
+            self.display_order = self.pk
+
         if not self.slug:
             self.slug = unique_slug_generator(self)
+
         super(Lesson, self).save(*args, **kwargs)
 
 
