@@ -16,12 +16,13 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from app.views import LessonListView, LessonDetailView, SubmitAnswerView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('tinymce/', include('tinymce.urls')),
     path('', LessonListView.as_view(), name='learn_list'),
     path('learn/<slug>/', LessonDetailView.as_view(), name='learn_detail'),
     path('learn/<slug>/submit-answer', SubmitAnswerView.as_view(), name='submit_answer'),

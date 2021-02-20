@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'tinymce',
+
     'app'
 ]
 
@@ -122,3 +124,12 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'assets', 'static/'), )
 MEDIA_ROOT = os.path.join(BASE_DIR, 'assets', 'media/')
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+
+
+# Tiny MCE Configuration
+# https://django-tinymce.readthedocs.io/en/latest/
+TINYMCE_DEFAULT_CONFIG = {
+    "menubar": "",
+    "plugins": "lists link image charmap print preview anchor visualblocks code ",
+    "toolbar": "formatselect | bold italic underline | numlist bullist | link codesample",
+}
