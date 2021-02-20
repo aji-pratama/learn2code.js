@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+<h2> This is Index CodeLearn</h2>
+
+{% for learn in learns %}
+    <a href="{% url 'learn_detail' learn.slug %}"> {{ learn.title }} </a>
+{% endfor %}
+
+{% endblock content %}
+
+
+{% block extra_scripts %}
+
+{% endblock extra_scripts %}
