@@ -20,7 +20,7 @@ def sandbox(toexec):
     with stdoutIO() as s:
         try:
             eval_js(toexec)
-            result = s.getvalue().strip().replace("'", '').replace('"', '') or None
+            result = s.getvalue().replace("'", '').replace('"', '').strip() or None
             response = {
                 'success': True,
                 'result': result

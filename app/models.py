@@ -41,7 +41,7 @@ class Lesson(BaseModel):
 class ExpectedAnswer(BaseModel):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     expected_code = models.TextField(blank=True)
-    expected_result = models.TextField()
+    expected_output = models.TextField()
 
     def __str__(self):
-        return self.expected_result
+        return self.expected_output

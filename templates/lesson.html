@@ -21,11 +21,13 @@
         border: none;
     }
     .section-console {
+        width: 100%;
         font-family: monospace,monospace;
         background-color: black;
         color: white;
         padding: 1rem;
         height: 88vh;
+        border: none;
     }
 </style>
 {% endblock extra_styles %}
@@ -48,9 +50,7 @@
                 <button v-on:click="submitAnswer()" class="btn btn-outline-success btn-lg border-1 rounded-0 ml-1 px-5"> RUN </button>
             </div>
             <div class="col-md-3 p-0">
-                <div class="section-console">
-                    [% answerResult.console %]
-                </div>
+                <textarea class="section-console" disabled>[% answerResult.console %]</textarea>
             </div>
         </div>
     </div>
