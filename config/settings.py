@@ -129,6 +129,8 @@ MEDIA_URL = '/media/'
 # Tiny MCE Configuration
 # https://django-tinymce.readthedocs.io/en/latest/
 TINYMCE_DEFAULT_CONFIG = {
+    "height": "560px",
+    "width": "800px",
     "menubar": "",
     "plugins": "lists link image charmap print preview anchor visualblocks code ",
     "toolbar": "formatselect | bold italic underline | numlist bullist | link codesample",
