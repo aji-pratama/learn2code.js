@@ -136,5 +136,5 @@ TINYMCE_DEFAULT_CONFIG = {
     "width": "800px",
     "menubar": "",
     "plugins": "lists link image charmap print preview anchor visualblocks code ",
-    "toolbar": "formatselect | bold italic underline | numlist bullist | link codesample",
+    "toolbar": "formatselect | bold italic underline | numlist bullist | link code",
 }
