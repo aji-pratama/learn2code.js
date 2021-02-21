@@ -55,11 +55,11 @@
 
         <!-- Notification code success-->
         <div v-if="success" class="notification alert alert-success" role="alert">
-            <strong>Failed!</strong> Your Code is Failed
+            <strong>Congratulations!</strong> Your code is running success
         </div>
         <!-- Notification code failed-->
         <div v-else-if="success == false" class="notification alert alert-danger" role="alert">
-            <strong>Failed!</strong> Your Code is Failed
+            <strong>Error!</strong> Your code is failed
         </div>
 
         <div class="row">
@@ -73,7 +73,8 @@
             </div>
             <div class="col-md-5 p-0 section-codeeditor">
                 <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
-                <button v-on:click="submitAnswer()" class="btn btn-outline-success btn-lg border-1 rounded-0 ml-1 px-5"> RUN </button>
+                <button v-on:click="runCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> RUN </button>
+                <button v-on:click="submitCode()" class="btn btn-success btn-lg ml-1 px-5 text-dark"> SUBMIT ANSWER </button>
             </div>
             <div class="col-md-3 p-0">
                 <textarea class="section-console" disabled>[% data.output %]</textarea>
@@ -106,7 +107,7 @@ new Vue({
         }
     },
     methods: {
-        submitAnswer: function() {
+        runCode: function() {
             let url = `{% url 'submit_answer' lesson.slug %}`
             let data = {
                 'answer_code': this.answerCode
@@ -121,7 +122,8 @@ new Vue({
             axios.post(url, data, config)
             .then((response) => {
                 this.data = response.data
-                this.success = true
+                this.success = response.data.success
+                setTimeout(() => this.success = null, 1100)
             })
             .catch(function (error) {
                 this.success = false
