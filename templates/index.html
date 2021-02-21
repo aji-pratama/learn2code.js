@@ -3,15 +3,15 @@
 {% block content %}
 <section id="id-home">
   	<div class="container py-3">
-		<h1> Learn at CodeLearn</h1>
+		<h3> Learn2Code</h3>
 
 		<div class="row">
 			{% for lesson in lessons %}
 			<div class="col-md-4">
-				<div class="card">
+				<div class="card shadow-sm">
 					<div class="card-body">
-						<h3 class="card-title">{{ lesson.title }}</h3>
-						<a href="{% url 'learn_detail' lesson.slug %}" class="btn btn-primary"> Try Now </a>
+						<h5 class="card-title">{{ lesson.title }}</h5>
+						<a href="{% url 'learn_detail' lesson.slug %}" class="btn btn-default"> Try Now </a>
 					</div>
 				</div>
 			</div>

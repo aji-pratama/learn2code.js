@@ -3,7 +3,6 @@
 
 {% block extra_styles %}
 <link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/lib/codemirror.css">
-<link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/addon/lint/lint.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/theme/material-palenight.css">
 <style type="text/css">
     .CodeMirror {
@@ -44,11 +43,11 @@
                     {{ lesson.instruction|safe }}
                 </div>
             </div>
-            <div class="col-md-4 p-0 section-codeeditor">
+            <div class="col-md-5 p-0 section-codeeditor">
                 <input type="text" id="id-code-editor" height="1000px" v-model="answerCode">
                 <button v-on:click="submitAnswer()" class="btn btn-outline-success btn-lg border-1 float-right rounded-1 px-5"> RUN 🚀 </button>
             </div>
-            <div class="col-md-4 p-0">
+            <div class="col-md-3 p-0">
                 <div class="section-console">
                     [% answerResult.console %]
                 </div>
@@ -62,15 +61,7 @@
 {% block extra_scripts %}
 <!-- CodeMirror -->
 <script src="{{ STATIC_URL }}codemirror/lib/codemirror.js"></script>
-<script src="{{ STATIC_URL }}codemirror/addon/mode/overlay.js"></script>
-<script src="{{ STATIC_URL }}codemirror/addon/edit/matchbrackets.js"></script>
-<script src="{{ STATIC_URL }}codemirror/addon/edit/matchtags.js"></script>
-<script src="{{ STATIC_URL }}codemirror/addon/fold/xml-fold.js"></script>
-<script src="{{ STATIC_URL }}codemirror/addon/lint/lint.js"></script>
-<script src="{{ STATIC_URL }}codemirror/addon/lint/javascript-lint.js"></script>
-<script src="{{ STATIC_URL }}codemirror/addon/lint/json-lint.js"></script>
 <script src="{{ STATIC_URL }}codemirror/mode/javascript/javascript.js"></script>
-<script src="{{ STATIC_URL }}codemirror/mode/htmlmixed/htmlmixed.js"></script>
 
 <!-- VueJS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
@@ -89,8 +80,8 @@ new Vue({
     },
     methods: {
         submitAnswer: function() {
-            let requestUrl = `{% url 'submit_answer' lesson.slug %}`
-            let requestData = {
+            let url = `{% url 'submit_answer' lesson.slug %}`
+            let data = {
                 'answer_code': this.answerCode
             }
             let config = {
@@ -100,7 +91,7 @@ new Vue({
                 }
             }
 
-            axios.post(requestUrl, requestData, config)
+            axios.post(url, data, config)
             .then((response) => {
                 this.answerResult = response.data
             })
