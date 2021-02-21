@@ -54,26 +54,12 @@
 <script src="{{ STATIC_URL }}codemirror/addon/lint/json-lint.js"></script>
 <script src="{{ STATIC_URL }}codemirror/mode/javascript/javascript.js"></script>
 <script src="{{ STATIC_URL }}codemirror/mode/htmlmixed/htmlmixed.js"></script>
-<script type="text/javascript">
-    let textArea = document.getElementById('id-code-editor')
-    const codemirror_config = {
-        'mode': 'javascript',
-        'indentUnit': 4,
-        'tabSize': 4,
-        'theme': "dracula",
-        'lineNumbers': true,
-        'matchTags': {'bothTags': true}
-    }
-    editor = CodeMirror.fromTextArea(textArea, codemirror_config);
-    function selectTheme() {
-        editor.setOption("theme", "dracula");
-    }
-    setTimeout(selectTheme, 5000);
-</script>
 
 <!-- VueJS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- Scripts -->
 <script>  
 new Vue({
     el: '#id-lesson',
@@ -106,6 +92,22 @@ new Vue({
             });
         }
     },
+    mounted: function() {
+        let textArea = document.getElementById('id-code-editor')
+        const codemirror_config = {
+            'mode': 'javascript',
+            'indentUnit': 4,
+            'tabSize': 4,
+            'theme': "dracula",
+            'lineNumbers': true,
+            'matchTags': {'bothTags': true}
+        }
+        editor = CodeMirror.fromTextArea(textArea, codemirror_config);
+        function selectTheme() {
+            editor.setOption("theme", "dracula");
+        }
+        setTimeout(selectTheme, 5000);
+    }
 })
 </script>
 {% endblock extra_scripts %}
