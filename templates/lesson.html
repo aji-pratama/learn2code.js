@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/theme/material-palenight.css">
 <style type="text/css">
     textarea {
-    resize: none;
+        resize: none;
     }
     .CodeMirror {
         height: 81.5vh;
@@ -54,11 +54,11 @@
     <div class="container-fluid">
 
         <!-- Notification code success-->
-        <div class="notification alert alert-success alert-dismissible fade show " role="alert">
+        <div v-if="success" class="notification alert alert-success" role="alert">
             <strong>Failed!</strong> Your Code is Failed
         </div>
         <!-- Notification code failed-->
-        <div class="notification alert alert-danger alert-dismissible fade show " role="alert">
+        <div v-else-if="success == false" class="notification alert alert-danger" role="alert">
             <strong>Failed!</strong> Your Code is Failed
         </div>
 
@@ -100,6 +100,7 @@ new Vue({
     delimiters: ['[%', '%]'],
     data () {
         return {
+            success: null,
             answerCode: `{{ lesson.initial_code|safe }}`,
             data: {}
         }
