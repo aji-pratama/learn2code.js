@@ -5,6 +5,9 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/lib/codemirror.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/theme/material-palenight.css">
 <style type="text/css">
+    textarea {
+    resize: none;
+    }
     .CodeMirror {
         height: 81.5vh;
         width: 100%;
@@ -29,6 +32,19 @@
         height: 88vh;
         border: none;
     }
+    .notification {
+        z-index: 999999999;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0rem;
+        width: 40%;
+        left: 130px;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
 {% endblock extra_styles %}
 
@@ -36,6 +52,16 @@
 {% block content %}
 <section id="id-lesson">
     <div class="container-fluid">
+
+        <!-- Notification code success-->
+        <div class="notification alert alert-success alert-dismissible fade show " role="alert">
+            <strong>Failed!</strong> Your Code is Failed
+        </div>
+        <!-- Notification code failed-->
+        <div class="notification alert alert-danger alert-dismissible fade show " role="alert">
+            <strong>Failed!</strong> Your Code is Failed
+        </div>
+
         <div class="row">
             <div class="col-md-4 p-0">
                 <div class="navbar bg-secondary p-2 shadow">
@@ -47,23 +73,7 @@
             </div>
             <div class="col-md-5 p-0 section-codeeditor">
                 <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
-                <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-4">
-                        <button v-on:click="submitAnswer()" class="btn btn-outline-success btn-lg border-1 rounded-0 ml-1 px-5"> RUN </button>
-                    </div>
-                    <div class="col-md-8">
-                        <!--Code success-->
-                        <div class="alert alert-success alert-dismissible fade show rounded-0 w-100" role="alert">
-                            <strong>Failed!</strong> Your Code is Failed
-                        </div>
-                        <!--Code failed-->
-                        <div class="alert alert-danger alert-dismissible fade show rounded-0 w-100" role="alert">
-                            <strong>Failed!</strong> Your Code is Failed
-                        </div>
-                    </div>
-                </div>
-                </div>
+                <button v-on:click="submitAnswer()" class="btn btn-outline-success btn-lg border-1 rounded-0 ml-1 px-5"> RUN </button>
             </div>
             <div class="col-md-3 p-0">
                 <textarea class="section-console" disabled>[% data.output %]</textarea>
