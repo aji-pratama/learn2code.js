@@ -4,23 +4,25 @@
 {% block extra_styles %}
 <link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/lib/codemirror.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/addon/lint/lint.css">
-<link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/theme/dracula.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/theme/material-palenight.css">
 <style type="text/css">
-    .scrollable {
-        height: 88vh;
-        overflow-y: scroll;
-    }
     .CodeMirror {
         height: 81.75vh;
         width: 100%;
         font-size: 1.35rem;
+        z-index: 9999;
     }
-    .code-editor-col {
+    .section-scrollable {
+        height: 88vh;
+        overflow-y: scroll;
+    }
+    .section-codeeditor {
         background-color: #282a36!important;
         color: #f8f8f2!important;
         border: none;
     }
-    .console {
+    .section-console {
+        font-family: monospace,monospace;
         background-color: black;
         color: white;
         padding: 1rem;
@@ -35,19 +37,19 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-4 p-0">
-                <div class="navbar bg-secondary p-2">
-                    <h3>Instruction</h3>
+                <div class="navbar bg-secondary p-2 shadow">
+                    <h5>Instruction</h5>
                 </div>
-                <div class="container scrollable">
+                <div class="container-fluid p-0 section-scrollable">
                     {{ lesson.instruction|safe }}
                 </div>
             </div>
-            <div class="col-md-4 p-0 code-editor-col">
+            <div class="col-md-4 p-0 section-codeeditor">
                 <input type="text" id="id-code-editor" height="1000px" v-model="answerCode">
-                <button v-on:click="submitAnswer()" class="btn btn-secondary btn-lg float-right rounded-1 px-5"> RUN 🚀 </button>
+                <button v-on:click="submitAnswer()" class="btn btn-outline-success btn-lg border-1 float-right rounded-1 px-5"> RUN 🚀 </button>
             </div>
             <div class="col-md-4 p-0">
-                <div class="console">
+                <div class="section-console">
                     [% answerResult.console %]
                 </div>
             </div>
@@ -114,7 +116,7 @@ new Vue({
             'mode': 'javascript',
             'indentUnit': 4,
             'tabSize': 4,
-            'theme': "dracula",
+            'theme': "material-palenight",
             'lineNumbers': true,
             'matchTags': {'bothTags': true}
         }
@@ -130,7 +132,6 @@ new Vue({
         function selectTheme() {
             editor.setOption("theme", "dracula");
         }
-        setTimeout(selectTheme, 5000);
         editor.on('change', function(cm) {
             scope.answerCode = cm.getValue();
         });
