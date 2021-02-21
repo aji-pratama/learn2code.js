@@ -35,6 +35,6 @@ class SubmitAnswerView(View):
         form_data = json.loads(request.body)
         result_answer_code = sandbox(form_data['answer_code'])
         response_data = {
-            'result': result_answer_code
+            'console': result_answer_code['result']
         }
         return JsonResponse(response_data)

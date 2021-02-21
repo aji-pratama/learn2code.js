@@ -6,12 +6,19 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/addon/lint/lint.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/theme/dracula.css">
 <style type="text/css">
-    .CodeMirror {
-        height: 85vh;
-    }
     .scrollable {
         height: 85vh;
         overflow-y: scroll;
+    }
+    .CodeMirror {
+        height: 85vh;
+        font-size: 1.35rem;
+    }
+    .console {
+        background-color: black;
+        color: white;
+        padding: 1rem;
+        height: 85vh;
     }
 </style>
 {% endblock extra_styles %}
@@ -34,7 +41,9 @@
                 <button v-on:click="submitAnswer()" class="btn btn-primary">RUN</button>
             </div>
             <div class="col-md-4 p-0">
-                [% answerResult %]
+                <div class="console">
+                    [% answerResult.console %]
+                </div>
             </div>
         </div>
     </div>
