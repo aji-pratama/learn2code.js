@@ -8,7 +8,7 @@ from django.views.generic import (
 )
 
 from app.forms import LessonSubmissionForm
-from app.intrepreter import sandbox
+from app.intrepreters import exec_js
 from app.models import Lesson
 
 
@@ -33,8 +33,8 @@ class SubmitAnswerView(View):
 
     def post(self, request, slug):
         form_data = json.loads(request.body)
-        result_answer_code = sandbox(form_data['answer_code'])
+        output_answer_code = exec_js(form_data['answer_code'])
         response_data = {
-            'console': result_answer_code['result']
+            'output': output_answer_code['output']
         }
         return JsonResponse(response_data)

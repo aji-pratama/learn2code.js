@@ -50,7 +50,7 @@
                 <button v-on:click="submitAnswer()" class="btn btn-outline-success btn-lg border-1 rounded-0 ml-1 px-5"> RUN </button>
             </div>
             <div class="col-md-3 p-0">
-                <textarea class="section-console" disabled>[% answerResult.console %]</textarea>
+                <textarea class="section-console" disabled>[% data.output %]</textarea>
             </div>
         </div>
     </div>
@@ -75,7 +75,7 @@ new Vue({
     data () {
         return {
             answerCode: `{{ lesson.initial_code|safe }}`,
-            answerResult: {}
+            data: {}
         }
     },
     methods: {
@@ -93,7 +93,7 @@ new Vue({
 
             axios.post(url, data, config)
             .then((response) => {
-                this.answerResult = response.data
+                this.data = response.data
             })
             .catch(function (error) {
                 console.log(error);
