@@ -6,7 +6,7 @@ class CodeMirrorWidget(forms.Textarea):
     config = {
         'indentUnit': 4,
         'tabSize': 4,
-        'theme': "dracula",
+        'theme': "material-palenight",
         'lineNumbers': True,
         'matchTags': {'bothTags': True}
     }
@@ -14,21 +14,13 @@ class CodeMirrorWidget(forms.Textarea):
     class Media:
         js = (
             'codemirror/lib/codemirror.js',
-            'codemirror/addon/mode/overlay.js',
-            'codemirror/addon/edit/matchbrackets.js',
-            'codemirror/addon/edit/matchtags.js',
-            'codemirror/addon/fold/xml-fold.js',
-            'codemirror/addon/lint/lint.js',
-            'codemirror/addon/lint/javascript-lint.js',
-            'codemirror/addon/lint/json-lint.js',
             'codemirror/mode/javascript/javascript.js',
             'codemirror/mode/htmlmixed/htmlmixed.js',
         )
         css = {
             'all': (
                 'codemirror/lib/codemirror.css',
-                'codemirror/addon/lint/lint.css',
-                'codemirror/theme/dracula.css'
+                'codemirror/theme/material-palenight.css'
             )
         }
 
@@ -39,6 +31,12 @@ class CodeMirrorWidget(forms.Textarea):
     def render(self, name, value, attrs=None, renderer=None):
         field = super(CodeMirrorWidget, self).render(name, value, attrs, renderer)
         template = """%s
+            <style type="text/css">
+                .CodeMirror {
+                    font-size: 1rem;
+                    z-index: 9999;
+                }
+            </style>
             <script type="text/javascript">
                 function betterTab(cm) {
                     if (cm.somethingSelected()) {
