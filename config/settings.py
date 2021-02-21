@@ -39,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 3rd parties
     'tinymce',
 
+    # Application
     'app'
 ]
 
@@ -110,8 +112,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'en-id'
+TIME_ZONE = 'Asia/Jakarta'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -126,8 +128,9 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 
-# Tiny MCE Configuration
+# TinyMCE Configuration
 # https://django-tinymce.readthedocs.io/en/latest/
+
 TINYMCE_DEFAULT_CONFIG = {
     "height": "560px",
     "width": "800px",
