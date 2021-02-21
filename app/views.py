@@ -33,8 +33,5 @@ class SubmitAnswerView(View):
 
     def post(self, request, slug):
         form_data = json.loads(request.body)
-        output_answer_code = exec_js(form_data['answer_code'])
-        response_data = {
-            'output': output_answer_code['output']
-        }
-        return JsonResponse(response_data)
+        output = exec_js(form_data['answer_code'])
+        return JsonResponse(output)

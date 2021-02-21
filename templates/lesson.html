@@ -121,8 +121,10 @@ new Vue({
             axios.post(url, data, config)
             .then((response) => {
                 this.data = response.data
+                this.success = true
             })
             .catch(function (error) {
+                this.success = false
                 console.log(error);
             });
         }
