@@ -7,18 +7,24 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/theme/dracula.css">
 <style type="text/css">
     .scrollable {
-        height: 85vh;
+        height: 88vh;
         overflow-y: scroll;
     }
     .CodeMirror {
-        height: 85vh;
+        height: 81.75vh;
+        width: 100%;
         font-size: 1.35rem;
+    }
+    .code-editor-col {
+        background-color: #282a36!important;
+        color: #f8f8f2!important;
+        border: none;
     }
     .console {
         background-color: black;
         color: white;
         padding: 1rem;
-        height: 85vh;
+        height: 88vh;
     }
 </style>
 {% endblock extra_styles %}
@@ -29,16 +35,16 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-4 p-0">
-                <div class="navbar bg-default p-2">
-                    <h3 class="text-light">Instruction</h3>
+                <div class="navbar bg-secondary p-2">
+                    <h3>Instruction</h3>
                 </div>
                 <div class="container scrollable">
                     {{ lesson.instruction|safe }}
                 </div>
             </div>
-            <div class="col-md-4 p-0">
+            <div class="col-md-4 p-0 code-editor-col">
                 <input type="text" id="id-code-editor" height="1000px" v-model="answerCode">
-                <button v-on:click="submitAnswer()" class="btn btn-primary">RUN</button>
+                <button v-on:click="submitAnswer()" class="btn btn-secondary btn-lg float-right rounded-1 px-5"> RUN 🚀 </button>
             </div>
             <div class="col-md-4 p-0">
                 <div class="console">

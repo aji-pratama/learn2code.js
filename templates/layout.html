@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>CodeLearn</title>
+        <title>👨‍💻 Learn2Code</title>
         <meta name="description" content="">
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
@@ -12,10 +12,15 @@
         {% block extra_styles %}{% endblock extra_styles %}
     </head>
     <body>
-        {% include "nav.html" %}
+        <nav class="navbar navbar-horizontal navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">👨‍💻 Learn2Code</a>
+        </nav>
         <main role="main">
             {% block content %}{% endblock content %} 
         </main>
+        <nav class="navbar fixed-bottom navbar-dark bg-dark">
+            🌏 2021
+        </nav>
         {% block extra_scripts %}{% endblock extra_scripts %}
     </body>
 </html>
