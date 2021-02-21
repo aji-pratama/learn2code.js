@@ -37,12 +37,13 @@
                 </div>
             </div>
             <div class="col-md-4 p-0">
-                <input type="text" id="id-code-editor" height="1000px" value="" v-model="answerCode">
+                <input type="text" id="id-code-editor" height="1000px" v-model="answerCode">
                 <button v-on:click="submitAnswer()" class="btn btn-primary">RUN</button>
             </div>
             <div class="col-md-4 p-0">
                 <div class="console">
                     [% answerResult.console %]
+                    [% answerCode %]
                 </div>
             </div>
         </div>
@@ -111,7 +112,15 @@ new Vue({
             'lineNumbers': true,
             'matchTags': {'bothTags': true}
         }
-        editor = CodeMirror.fromTextArea(textArea, codemirror_config);
+        function betterTab(cm) {
+            if (cm.somethingSelected()) {
+                cm.indentSelection("add");
+            } else {
+                cm.replaceSelection(cm.getOption("indentWithTabs")? "\t":
+                Array(cm.getOption("indentUnit") + 1).join(" "), "end", "+input");
+            }
+        }
+        editor = CodeMirror.fromTextArea(textArea, Object.assign(codemirror_config, {'extraKeys':{'Tab': betterTab}}))
         function selectTheme() {
             editor.setOption("theme", "dracula");
         }
