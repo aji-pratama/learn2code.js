@@ -1,7 +1,7 @@
 import contextlib
 import sys
 from io import StringIO
-from js2py import eval_js
+from js2py import eval_js, PyJsException
 
 
 @contextlib.contextmanager
@@ -26,6 +26,8 @@ def exec_js(toexec):
             }
             return result
 
-        except Exception as e:
-            result['output'] = e
+        except PyJsException as err:
+            print(err)
+            output = s.getvalue().replace("'", '').replace('"', '').strip() or None
+            result['output'] = output
             return result
