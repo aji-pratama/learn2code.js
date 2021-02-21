@@ -9,7 +9,7 @@
         height: 81.5vh;
         width: 100%;
         font-size: 1.35rem;
-        z-index: 9999;
+        z-index: 6;
     }
     .section-scrollable {
         height: 88vh;
@@ -47,7 +47,23 @@
             </div>
             <div class="col-md-5 p-0 section-codeeditor">
                 <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
-                <button v-on:click="submitAnswer()" class="btn btn-outline-success btn-lg border-1 rounded-0 ml-1 px-5"> RUN </button>
+                <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <button v-on:click="submitAnswer()" class="btn btn-outline-success btn-lg border-1 rounded-0 ml-1 px-5"> RUN </button>
+                    </div>
+                    <div class="col-md-8">
+                        <!--Code success-->
+                        <div class="alert alert-success alert-dismissible fade show rounded-0 w-100" role="alert">
+                            <strong>Failed!</strong> Your Code is Failed
+                        </div>
+                        <!--Code failed-->
+                        <div class="alert alert-danger alert-dismissible fade show rounded-0 w-100" role="alert">
+                            <strong>Failed!</strong> Your Code is Failed
+                        </div>
+                    </div>
+                </div>
+                </div>
             </div>
             <div class="col-md-3 p-0">
                 <textarea class="section-console" disabled>[% data.output %]</textarea>
