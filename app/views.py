@@ -20,8 +20,11 @@ class LessonListView(ListView):
 
 class LessonDetailView(DetailView):
     model = Lesson
-    template_name = 'lesson.html'
-    context_object_name = 'lesson'
+
+    def get_template_names(self):
+        if self.get_object().output_interface == 2:
+            return 'lesson_web.html'
+        return 'lesson.html'
 
 
 class SubmitAnswerView(View):

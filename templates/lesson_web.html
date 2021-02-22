@@ -1,0 +1,168 @@
+{% extends "layout.html" %}
+
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/lib/codemirror.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}/codemirror/theme/material-palenight.css">
+<style type="text/css">
+    textarea {
+        resize: none;
+    }
+    .CodeMirror {
+        height: 81.5vh;
+        width: 100%;
+        font-size: 1.275rem;
+        z-index: 6;
+    }
+    .section-scrollable {
+        height: 88vh;
+        overflow-y: scroll;
+    }
+    .section-codeeditor {
+        background-color: #282a36!important;
+        color: #f8f8f2!important;
+        border: none;
+    }
+    .notification {
+        z-index: 999999999;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0rem;
+        width: 30%;
+        left: 0px;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+{% endblock extra_styles %}
+
+
+{% block content %}
+<section id="id-lesson">
+    <div class="container-fluid">
+
+        <!-- Notification code success & answer correct -->
+        <div v-if="success && correct" class="notification alert alert-success" role="alert">
+            <strong>Congratulations!</strong> Your answer is correct.
+        </div>
+        <!-- Notification code success but answer incorrect -->
+        <div v-else-if="success && !correct" class="notification alert alert-warning" role="alert">
+            <strong>Incorrect Answer!</strong> Your code is running success, but the answer is incorrect.
+        </div>
+        <!-- Notification code error -->
+        <div v-else-if="success == false" class="notification alert alert-danger" role="alert">
+            <strong>Error!</strong> Your code is error.
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 p-0">
+                <div class="navbar bg-secondary p-2 shadow">
+                    <h5>Instruction</h5>
+                </div>
+                <div class="container-fluid section-scrollable">
+                    {{ lesson.instruction|safe }}
+                </div>
+            </div>
+            <div class="col-md-4 p-0 section-codeeditor">
+                <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
+                <button v-on:click="submitCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> Run </button>
+                <a v-if="nextLesson" :href="nextLesson" class="btn btn-success btn-lg ml-1 px-5"> Next Lesson </a>
+            </div>
+            <div class="col-md-4 p-1">
+                [% data.output %]
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+
+{% block extra_scripts %}
+<!-- CodeMirror -->
+<script src="{{ STATIC_URL }}codemirror/lib/codemirror.js"></script>
+<script src="{{ STATIC_URL }}codemirror/mode/javascript/javascript.js"></script>
+
+<!-- VueJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- Scripts -->
+<script>  
+new Vue({
+    el: '#id-lesson',
+    delimiters: ['[%', '%]'],
+    data () {
+        return {
+            success: null,
+            correct: null,
+            nextLesson: null,
+            answerCode: `{{ lesson.initial_code|safe }}`,
+            data: {}
+        }
+    },
+    methods: {
+        submitCode: function() {
+            let url = `{% url 'submit_answer' lesson.slug %}`
+            let data = {
+                'answer_code': this.answerCode
+            }
+            let config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                }
+            }
+
+            axios.post(url, data, config)
+            .then((response) => {
+                this.data = response.data
+                this.success = response.data.success
+                this.correct = response.data.correct
+                this.nextLesson = response.data.next_lesson
+                setTimeout(() => {
+                    this.success = null
+                    this.correct = null
+                }, 2000)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+    },
+    mounted: function() {
+        var scope = this
+        let textArea = document.getElementById('id-code-editor')
+        let config = {
+            'mode': 'javascript',
+            'indentUnit': 4,
+            'tabSize': 4,
+            'theme': "material-palenight",
+            'lineNumbers': true,
+            'matchTags': {'bothTags': true}
+        }
+
+        function betterTab(cm) {
+            if (cm.somethingSelected()) {
+                cm.indentSelection("add");
+            } else {
+                cm.replaceSelection(cm.getOption("indentWithTabs")? "\t":
+                Array(cm.getOption("indentUnit") + 1).join(" "), "end", "+input");
+            }
+        }
+
+        let editor = CodeMirror.fromTextArea(textArea, Object.assign(config, {'extraKeys':{'Tab': betterTab}}))
+
+        function selectTheme() {
+            editor.setOption("theme", "dracula");
+        }
+
+        editor.on('change', function(cm) {
+            scope.answerCode = cm.getValue();
+        });
+    }
+})
+</script>
+{% endblock extra_scripts %}

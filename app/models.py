@@ -13,7 +13,13 @@ class BaseModel(models.Model):
 
 
 class Lesson(BaseModel):
+    OUTPUT_INTERFACE_CHOICES = [
+        (1, 'Console'),
+        (2, 'Web'),
+    ]
+
     title = models.CharField(max_length=255)
+    output_interface = models.PositiveSmallIntegerField(default=1, choices=OUTPUT_INTERFACE_CHOICES)
     slug = models.SlugField(max_length=255, blank=True, unique=True)
     instruction = models.TextField()
     initial_code = models.TextField(blank=True)
