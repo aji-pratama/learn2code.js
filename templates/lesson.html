@@ -39,8 +39,8 @@
         align-items: center;
         position: fixed;
         top: 0rem;
-        width: 40%;
-        left: 130px;
+        width: 30%;
+        left: 0px;
         right: 0;
         margin-left: auto;
         margin-right: auto;
@@ -53,15 +53,15 @@
 <section id="id-lesson">
     <div class="container-fluid">
 
-        <!-- Notification code success & answer correct-->
+        <!-- Notification code success & answer correct -->
         <div v-if="success && correct" class="notification alert alert-success" role="alert">
             <strong>Congratulations!</strong> Your answer is correct.
         </div>
-        <!-- Notification code success & answer incorrect-->
+        <!-- Notification code success but answer incorrect -->
         <div v-else-if="success && !correct" class="notification alert alert-warning" role="alert">
             <strong>Incorrect Answer!</strong> Your code is running success, but the answer is incorrect.
         </div>
-        <!-- Notification code error-->
+        <!-- Notification code error -->
         <div v-else-if="success == false" class="notification alert alert-danger" role="alert">
             <strong>Error!</strong> Your code is error.
         </div>
@@ -75,11 +75,11 @@
                     {{ lesson.instruction|safe }}
                 </div>
             </div>
-            <div class="col-md-5 p-0 section-codeeditor">
+            <div class="col-md-4 p-0 section-codeeditor">
                 <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
                 <button v-on:click="submitCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> RUN </button>
             </div>
-            <div class="col-md-3 p-0">
+            <div class="col-md-4 p-0">
                 <textarea class="section-console" disabled>[% data.output %]</textarea>
             </div>
         </div>
@@ -131,7 +131,7 @@ new Vue({
                 setTimeout(() => {
                     this.success = null
                     this.correct = null
-                }, 1800)
+                }, 2000)
             })
             .catch(function (error) {
                 console.log(error);
@@ -141,7 +141,7 @@ new Vue({
     mounted: function() {
         var scope = this
         let textArea = document.getElementById('id-code-editor')
-        const codemirror_config = {
+        let config = {
             'mode': 'javascript',
             'indentUnit': 4,
             'tabSize': 4,
@@ -149,6 +149,7 @@ new Vue({
             'lineNumbers': true,
             'matchTags': {'bothTags': true}
         }
+
         function betterTab(cm) {
             if (cm.somethingSelected()) {
                 cm.indentSelection("add");
@@ -157,10 +158,13 @@ new Vue({
                 Array(cm.getOption("indentUnit") + 1).join(" "), "end", "+input");
             }
         }
-        editor = CodeMirror.fromTextArea(textArea, Object.assign(codemirror_config, {'extraKeys':{'Tab': betterTab}}))
+
+        let editor = CodeMirror.fromTextArea(textArea, Object.assign(config, {'extraKeys':{'Tab': betterTab}}))
+
         function selectTheme() {
             editor.setOption("theme", "dracula");
         }
+
         editor.on('change', function(cm) {
             scope.answerCode = cm.getValue();
         });
