@@ -21,8 +21,8 @@ from django.urls import path, include
 from app.views import (
     LessonListView,
     LessonDetailView,
-    SubmitAnswerView,
-    AnswerWebView
+    ConsoleAnswerView,
+    WebAnswerView
 )
 
 urlpatterns = [
@@ -30,8 +30,8 @@ urlpatterns = [
     path('tinymce/', include('tinymce.urls')),
     path('', LessonListView.as_view(), name='learn_list'),
     path('learn/<slug>/', LessonDetailView.as_view(), name='learn_detail'),
-    path('learn/<slug>/submit-answer', SubmitAnswerView.as_view(), name='submit_answer'),
-    path('learn/<slug_obj>/web-output', AnswerWebView.as_view(), name='web_output'),
+    path('learn/<slug>/console-output', ConsoleAnswerView.as_view(), name='answer_console'),
+    path('learn/<slug>/web-output', WebAnswerView.as_view(), name='answer_web'),
 ]
 
 if settings.DEBUG:

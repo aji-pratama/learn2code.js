@@ -25,11 +25,11 @@ class LessonDetailView(DetailView):
 
     def get_template_names(self):
         if self.get_object().output_interface == 2:
-            return 'lesson_web.html'
-        return 'lesson.html'
+            return 'lesson/web.html'
+        return 'lesson/console.html'
 
 
-class SubmitAnswerView(View):
+class ConsoleAnswerView(View):
 
     def post(self, request, slug):
         form_data = json.loads(request.body)
@@ -58,18 +58,27 @@ class SubmitAnswerView(View):
         return answer_correct
 
 
-class AnswerWebView(View):
+class WebAnswerView(View):
 
     @xframe_options_exempt
     def get(self, request, *args, **kwargs):
         code = request.GET.get('code', '')
-        return render(request, "web_output.html", {"code": code})
+        return render(request, 'lesson/iframe_output.html', {'code': code})
 
-    def post(self, request, slug_obj):
+    def post(self, request, slug):
         form_data = json.loads(request.body)
+        answer_code = form_data['answer_code']
+        obj = Lesson.objects.get(slug=slug)
+
+        expected_codes = obj.expectedanswer_set.values_list('expected_code')
+        validate_answer_code = (True if answer_code in expected_codes else False)
 
         output = {
-            "success": True,
-            "output": form_data['answer_code']
+            'answer_code': answer_code,
+            'correct': validate_answer_code
         }
-        return JsonResponse(output, content_type="text/plain")
+
+        if validate_answer_code:
+            output['next_lesson'] = reverse_lazy('learn_detail', args=[obj.get_next_lesson().slug])
+
+        return JsonResponse(output)
