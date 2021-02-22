@@ -34,4 +34,21 @@ class SubmitAnswerView(View):
     def post(self, request, slug):
         form_data = json.loads(request.body)
         output = exec_js(form_data['answer_code'])
+        obj_lesson = Lesson.objects.get(slug=slug)
+        output['correct'] = self.validate_answer(obj_lesson, output)
         return JsonResponse(output)
+
+    def validate_answer(self, obj_lesson, answer_output):
+        expected_codes = obj_lesson.expectedanswer_set.values_list('expected_code')
+        expected_output = []
+
+        for code in expected_codes:
+            output = exec_js(code)
+            expected_output.append(output)
+
+        # validate output
+        answer_correct = False
+        if answer_output in expected_output:
+            answer_correct = True
+
+        return answer_correct

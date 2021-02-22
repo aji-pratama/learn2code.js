@@ -53,13 +53,17 @@
 <section id="id-lesson">
     <div class="container-fluid">
 
-        <!-- Notification code success-->
-        <div v-if="success" class="notification alert alert-success" role="alert">
-            <strong>Congratulations!</strong> Your code is running success
+        <!-- Notification code success & answer correct-->
+        <div v-if="success && correct" class="notification alert alert-success" role="alert">
+            <strong>Congratulations!</strong> Your answer is correct.
         </div>
-        <!-- Notification code failed-->
+        <!-- Notification code success & answer incorrect-->
+        <div v-else-if="success && !correct" class="notification alert alert-warning" role="alert">
+            <strong>Incorrect Answer!</strong> Your code is running success, but the answer is incorrect.
+        </div>
+        <!-- Notification code error-->
         <div v-else-if="success == false" class="notification alert alert-danger" role="alert">
-            <strong>Error!</strong> Your code is failed
+            <strong>Error!</strong> Your code is error.
         </div>
 
         <div class="row">
@@ -73,8 +77,7 @@
             </div>
             <div class="col-md-5 p-0 section-codeeditor">
                 <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
-                <button v-on:click="runCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> RUN </button>
-                <button v-on:click="submitCode()" class="btn btn-success btn-lg ml-1 px-5 text-dark"> SUBMIT ANSWER </button>
+                <button v-on:click="submitCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> RUN </button>
             </div>
             <div class="col-md-3 p-0">
                 <textarea class="section-console" disabled>[% data.output %]</textarea>
@@ -102,12 +105,13 @@ new Vue({
     data () {
         return {
             success: null,
+            correct: null,
             answerCode: `{{ lesson.initial_code|safe }}`,
             data: {}
         }
     },
     methods: {
-        runCode: function() {
+        submitCode: function() {
             let url = `{% url 'submit_answer' lesson.slug %}`
             let data = {
                 'answer_code': this.answerCode
@@ -123,10 +127,13 @@ new Vue({
             .then((response) => {
                 this.data = response.data
                 this.success = response.data.success
-                setTimeout(() => this.success = null, 1100)
+                this.correct = response.data.correct
+                setTimeout(() => {
+                    this.success = null
+                    this.correct = null
+                }, 1800)
             })
             .catch(function (error) {
-                this.success = false
                 console.log(error);
             });
         }
