@@ -12,6 +12,6 @@ class ExpectedAnswerInline(admin.StackedInline):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug']
+    list_display = ['title', 'slug', 'display_order']
     inlines = [ExpectedAnswerInline]
     form = LessonAdminForm

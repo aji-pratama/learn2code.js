@@ -77,7 +77,8 @@
             </div>
             <div class="col-md-4 p-0 section-codeeditor">
                 <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
-                <button v-on:click="submitCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> RUN </button>
+                <button v-on:click="submitCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> Run </button>
+                <a v-if="nextLesson" :href="nextLesson" class="btn btn-success btn-lg ml-1 px-5"> Next Lesson </a>
             </div>
             <div class="col-md-4 p-0">
                 <textarea class="section-console" disabled>[% data.output %]</textarea>
@@ -106,6 +107,7 @@ new Vue({
         return {
             success: null,
             correct: null,
+            nextLesson: null,
             answerCode: `{{ lesson.initial_code|safe }}`,
             data: {}
         }
@@ -128,6 +130,7 @@ new Vue({
                 this.data = response.data
                 this.success = response.data.success
                 this.correct = response.data.correct
+                this.nextLesson = response.data.next_lesson
                 setTimeout(() => {
                     this.success = null
                     this.correct = null

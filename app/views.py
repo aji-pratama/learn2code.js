@@ -1,6 +1,7 @@
 import json
 
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 from django.views.generic import (
     View,
     DetailView,
@@ -36,6 +37,10 @@ class SubmitAnswerView(View):
         output = exec_js(form_data['answer_code'])
         obj_lesson = Lesson.objects.get(slug=slug)
         output['correct'] = self.validate_answer(obj_lesson, output)
+
+        if output['correct']:
+            output['next_lesson'] = reverse_lazy('learn_detail', args=[obj_lesson.get_next_lesson().slug])
+
         return JsonResponse(output)
 
     def validate_answer(self, obj_lesson, answer_output):

@@ -37,6 +37,9 @@ class Lesson(BaseModel):
 
         super(Lesson, self).save(*args, **kwargs)
 
+    def get_next_lesson(self):
+        return self.__class__.objects.active().filter(display_order__gt=self.display_order).first()
+
 
 class ExpectedAnswer(BaseModel):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
