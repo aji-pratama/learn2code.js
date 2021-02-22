@@ -83,13 +83,12 @@ new Vue({
     data () {
         return {
             answerCode: `{{ lesson.initial_code|safe }}`,
-            urlOutput: `{% url 'web_output' lesson.slug %}`, 
-            data: {}
+            urlOutput: null
         }
     },
     methods: {
         submitCode: function() {
-            let url = this.urlOutput
+            let url = `{% url 'web_output' lesson.slug %}`
             let data = {
                 'answer_code': this.answerCode
             }
@@ -101,7 +100,6 @@ new Vue({
             }
             axios.post(url, data, config)
             .then((response) => {
-                this.data = response.data.output
                 this.urlOutput = url + '?code=' + encodeURIComponent(response.data.output)
                 document.getElementById('id-web-output').contentWindow.location.reload();
             })
