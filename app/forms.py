@@ -21,7 +21,3 @@ class ExpectedAnswerAdminForm(forms.ModelForm):
     class Meta:
         model = ExpectedAnswer
         exclude = []
-
-
-class LessonSubmissionForm(forms.Form):
-    answer_code = forms.CharField()
