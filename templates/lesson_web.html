@@ -89,6 +89,7 @@ new Vue({
     },
     methods: {
         submitCode: function() {
+            let url = this.urlOutput
             let data = {
                 'answer_code': this.answerCode
             }
@@ -98,12 +99,10 @@ new Vue({
                     "X-CSRFToken": "{{ csrf_token }}"
                 }
             }
-            axios.post(`{% url 'web_output' lesson.slug %}`, data, config)
+            axios.post(url, data, config)
             .then((response) => {
-                console.log(response.data)
-                this.data = response.data
-                this.urlOutput = this.urlOutput + '?code=' + response.data.output
-
+                this.data = response.data.output
+                this.urlOutput = url + '?code=' + encodeURIComponent(response.data.output)
                 document.getElementById('id-web-output').contentWindow.location.reload();
             })
             .catch(function (error) {

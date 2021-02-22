@@ -72,5 +72,4 @@ class AnswerWebView(View):
             "success": True,
             "output": form_data['answer_code']
         }
-
-        return JsonResponse(output)
+        return JsonResponse(output, content_type="text/plain")
