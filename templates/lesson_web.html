@@ -72,7 +72,7 @@
                 <a v-if="nextLesson" :href="nextLesson" class="btn btn-success btn-lg ml-1 px-5"> Next Lesson </a>
             </div>
             <div class="col-md-4 p-1">
-                <iframe src="{% url 'web_output' lesson.slug %}" class="section-console"></iframe>
+                <iframe id="id-web-output" src="{% url 'web_output' lesson.slug %}" class="section-console"></iframe>
             </div>
         </div>
     </div>
@@ -105,7 +105,7 @@ new Vue({
     },
     methods: {
         submitCode: function() {
-            let url = `{% url 'submit_answer' lesson.slug %}`
+            let url = `{% url 'web_output' lesson.slug %}`
             let data = {
                 'answer_code': this.answerCode
             }
@@ -118,6 +118,8 @@ new Vue({
 
             axios.post(url, data, config)
             .then((response) => {
+                document.getElementById('id-web-output').contentWindow.location.reload();
+
                 this.data = response.data
                 this.success = response.data.success
                 this.correct = response.data.correct

@@ -58,7 +58,14 @@ class SubmitAnswerView(View):
         return answer_correct
 
 
-@xframe_options_exempt
-def web_output(request, slug_obj=None):
-    obj = Lesson.objects.get(slug=slug_obj)
-    return render(request, "web_output.html", {'obj': obj})
+class AnswerWebView(View):
+    http_method_names = ['get', 'post']
+
+    @xframe_options_exempt
+    def get(self, request, *args, **kwargs):
+        code = request.GET.get('code', '')
+        return render(request, "web_output.html", {"code": code})
+
+    def post(self, request, *args, **kwargs):
+        form_data = json.loads(request.body)
+        return JsonResponse(form_data)

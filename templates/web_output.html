@@ -11,15 +11,13 @@
         {% endfor %}
     </head>
     <body>
-        This is Iframe of WEB View {{ obj.title }}
-        <button class="btn btn-primary">HAHA</button>
+        {{ code }}
 
         {% for js in obj.extra_static.js %}
             <script src="{{ js.url }}" async defer></script>
         {% endfor %}
         <script>
-            {{ obj.initial_code|safe }}
+            {{ code }}
         </script>
-
     </body>
 </html>
