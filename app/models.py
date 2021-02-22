@@ -1,6 +1,6 @@
 from django.db import models
 
-from app.managers import ActiveManagerInteface
+from app.managers import ActiveManagerInteface, StaticManagerInteface
 from app.utils import unique_slug_generator
 
 
@@ -45,6 +45,24 @@ class Lesson(BaseModel):
 
     def get_next_lesson(self):
         return self.__class__.objects.active().filter(display_order__gt=self.display_order).first()
+
+
+class ExtraStatic(BaseModel):
+    STATIC_CHOICES = [
+        (1, 'Css'),
+        (2, 'Javascript'),
+    ]
+    lesson = models.ForeignKey(Lesson, related_name='extra_static', on_delete=models.CASCADE)
+    static_type = models.PositiveSmallIntegerField(default=1, choices=STATIC_CHOICES)
+    url = models.URLField(max_length=255)
+
+    objects = StaticManagerInteface()
+
+    class Meta:
+        ordering = ['static_type']
+
+    def __str__(self):
+        return "{} extra {}".format(self.lesson.title, self.get_static_type_display())
 
 
 class ExpectedAnswer(BaseModel):

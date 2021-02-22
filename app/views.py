@@ -2,6 +2,8 @@ import json
 
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.shortcuts import render
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.generic import (
     View,
     DetailView,
@@ -54,3 +56,9 @@ class SubmitAnswerView(View):
             answer_correct = True
 
         return answer_correct
+
+
+@xframe_options_exempt
+def web_output(request, slug_obj=None):
+    obj = Lesson.objects.get(slug=slug_obj)
+    return render(request, "web_output.html", {'obj': obj})

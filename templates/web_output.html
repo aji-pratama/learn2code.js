@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% for css in obj.extra_static.css %}
+            <link rel="stylesheet" href="{{ css.url }}">
+        {% endfor %}
+    </head>
+    <body>
+        This is Iframe of WEB View {{ obj.title }}
+        <button class="btn btn-primary">HAHA</button>
+
+        {% for js in obj.extra_static.js %}
+            <script src="{{ js.url }}" async defer></script>
+        {% endfor %}
+        <script>
+            {{ obj.initial_code|safe }}
+        </script>
+
+    </body>
+</html>

@@ -3,8 +3,14 @@ from django.db import models
 
 class ActiveManagerInteface(models.Manager):
 
-    def get_queryset(self):
-        return super(ActiveManagerInteface, self).get_queryset()
-
     def active(self):
         return self.get_queryset().filter(active=True)
+
+
+class StaticManagerInteface(models.Manager):
+
+    def css(self):
+        return self.get_queryset().filter(static_type=1)
+
+    def js(self):
+        return self.get_queryset().filter(static_type=2)
