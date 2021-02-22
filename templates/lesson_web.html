@@ -44,19 +44,6 @@
 <section id="id-lesson">
     <div class="container-fluid">
 
-        <!-- Notification code success & answer correct -->
-        <div v-if="success && correct" class="notification alert alert-success" role="alert">
-            <strong>Congratulations!</strong> Your answer is correct.
-        </div>
-        <!-- Notification code success but answer incorrect -->
-        <div v-else-if="success && !correct" class="notification alert alert-warning" role="alert">
-            <strong>Incorrect Answer!</strong> Your code is running success, but the answer is incorrect.
-        </div>
-        <!-- Notification code error -->
-        <div v-else-if="success == false" class="notification alert alert-danger" role="alert">
-            <strong>Error!</strong> Your code is error.
-        </div>
-
         <div class="row">
             <div class="col-md-4 p-0">
                 <div class="navbar bg-secondary p-2 shadow">
@@ -69,10 +56,9 @@
             <div class="col-md-4 p-0 section-codeeditor">
                 <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
                 <button v-on:click="submitCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> Run </button>
-                <a v-if="nextLesson" :href="nextLesson" class="btn btn-success btn-lg ml-1 px-5"> Next Lesson </a>
             </div>
             <div class="col-md-4 p-1">
-                <iframe id="id-web-output" src="{% url 'web_output' lesson.slug %}" class="section-console"></iframe>
+                <iframe id="id-web-output" :src="urlOutput" class="section-console"></iframe>
             </div>
         </div>
     </div>
@@ -96,16 +82,13 @@ new Vue({
     delimiters: ['[%', '%]'],
     data () {
         return {
-            success: null,
-            correct: null,
-            nextLesson: null,
             answerCode: `{{ lesson.initial_code|safe }}`,
+            urlOutput: `{% url 'web_output' lesson.slug %}`, 
             data: {}
         }
     },
     methods: {
         submitCode: function() {
-            let url = `{% url 'web_output' lesson.slug %}`
             let data = {
                 'answer_code': this.answerCode
             }
@@ -115,19 +98,13 @@ new Vue({
                     "X-CSRFToken": "{{ csrf_token }}"
                 }
             }
-
-            axios.post(url, data, config)
+            axios.post(`{% url 'web_output' lesson.slug %}`, data, config)
             .then((response) => {
-                document.getElementById('id-web-output').contentWindow.location.reload();
-
+                console.log(response.data)
                 this.data = response.data
-                this.success = response.data.success
-                this.correct = response.data.correct
-                this.nextLesson = response.data.next_lesson
-                setTimeout(() => {
-                    this.success = null
-                    this.correct = null
-                }, 2000)
+                this.urlOutput = this.urlOutput + '?code=' + response.data.output
+
+                document.getElementById('id-web-output').contentWindow.location.reload();
             })
             .catch(function (error) {
                 console.log(error);

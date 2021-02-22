@@ -11,13 +11,13 @@
         {% endfor %}
     </head>
     <body>
-        {{ code }}
+        {{ code|safe }}
 
         {% for js in obj.extra_static.js %}
             <script src="{{ js.url }}" async defer></script>
         {% endfor %}
         <script>
-            {{ code }}
+            {{ code|safe }}
         </script>
     </body>
 </html>

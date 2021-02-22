@@ -59,13 +59,18 @@ class SubmitAnswerView(View):
 
 
 class AnswerWebView(View):
-    http_method_names = ['get', 'post']
 
     @xframe_options_exempt
     def get(self, request, *args, **kwargs):
         code = request.GET.get('code', '')
         return render(request, "web_output.html", {"code": code})
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, slug_obj):
         form_data = json.loads(request.body)
-        return JsonResponse(form_data)
+
+        output = {
+            "success": True,
+            "output": form_data['answer_code']
+        }
+
+        return JsonResponse(output)
