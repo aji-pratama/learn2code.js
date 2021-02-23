@@ -26,8 +26,17 @@ class LessonDetailView(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         obj = self.get_object()
+
         if obj.get_prev_lesson():
-            context['prev_lesson'] = reverse_lazy('learn_detail', args=[obj.get_prev_lesson().slug])
+            context['prev_lesson'] = reverse_lazy(
+                'learn_detail',
+                args=[obj.get_prev_lesson().slug]
+            )
+
+        context['initial_code'] = self.request.session.get(
+            'initial_code_%s' % obj.slug,
+            obj.initial_code
+        )
 
         return context
 
@@ -46,7 +55,13 @@ class ConsoleAnswerView(View):
         output['correct'] = self.validate_answer(obj, output)
 
         if obj.get_next_lesson() and output['correct']:
-            output['next_lesson'] = reverse_lazy('learn_detail', args=[obj.get_next_lesson().slug])
+            output['next_lesson'] = reverse_lazy(
+                'learn_detail',
+                args=[obj.get_next_lesson().slug]
+            )
+
+        # Store answered code to session
+        self.request.session['initial_code_%s' % slug] = form_data['answer_code']
 
         return JsonResponse(output)
 
@@ -87,6 +102,12 @@ class WebAnswerView(View):
         }
 
         if obj.get_next_lesson() and output['correct']:
-            output['next_lesson'] = reverse_lazy('learn_detail', args=[obj.get_next_lesson().slug])
+            output['next_lesson'] = reverse_lazy(
+                'learn_detail',
+                args=[obj.get_next_lesson().slug]
+            )
+
+        # Store answered code to session
+        self.request.session['initial_code_%s' % slug] = answer_code
 
         return JsonResponse(output)
