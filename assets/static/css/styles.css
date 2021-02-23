@@ -51,3 +51,7 @@ textarea {
     height: 88vh;
     border: none;
 }
+
+.btn-secondary.disabled, .btn-secondary:disabled{
+    color: rgb(206, 212, 218)
+}
