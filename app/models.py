@@ -17,7 +17,6 @@ class Lesson(BaseModel):
         (1, 'Console'),
         (2, 'Web'),
     ]
-
     title = models.CharField(max_length=255)
     output_interface = models.PositiveSmallIntegerField(default=1, choices=OUTPUT_INTERFACE_CHOICES)
     slug = models.SlugField(max_length=255, blank=True, unique=True)
@@ -35,9 +34,6 @@ class Lesson(BaseModel):
         return self.title
 
     def save(self, *args, **kwargs):
-        if self.display_order == 0:
-            self.display_order = self.pk
-
         if not self.slug:
             self.slug = unique_slug_generator(self)
 
@@ -59,19 +55,19 @@ class ExtraStatic(BaseModel):
     static_type = models.PositiveSmallIntegerField(default=1, choices=STATIC_CHOICES)
     url = models.URLField(max_length=255)
 
+    display_order = models.PositiveIntegerField(default=0, help_text='If the static assets need to order.')
     objects = StaticManagerInteface()
 
     class Meta:
-        ordering = ['static_type']
+        ordering = ['static_type', 'display_order']
 
     def __str__(self):
-        return "{} extra {}".format(self.lesson.title, self.get_static_type_display())
+        return '{} extra {}'.format(self.lesson.title, self.get_static_type_display())
 
 
 class ExpectedAnswer(BaseModel):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     expected_code = models.TextField(blank=True)
-    expected_output = models.TextField()
 
     def __str__(self):
-        return self.expected_output
+        return self.lesson.title

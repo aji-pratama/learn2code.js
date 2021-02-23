@@ -84,16 +84,17 @@ class ConsoleAnswerView(View):
 class WebAnswerView(View):
 
     @xframe_options_exempt
-    def get(self, request, *args, **kwargs):
+    def get(self, request, slug):
         code = request.GET.get('code', '')
-        return render(request, 'lesson/iframe_output.html', {'code': code})
+        obj = Lesson.objects.get(slug=slug)
+        return render(request, 'lesson/iframe_output.html', {'code': code, 'obj': obj})
 
     def post(self, request, slug):
         form_data = json.loads(request.body)
         answer_code = form_data['answer_code']
         obj = Lesson.objects.get(slug=slug)
 
-        expected_codes = obj.expectedanswer_set.values_list('expected_code')
+        expected_codes = obj.expectedanswer_set.values_list('expected_code', flat=True)
         validate_answer_code = (True if answer_code in expected_codes else False)
 
         output = {
