@@ -1,13 +1,11 @@
 from django import forms
 
-from tinymce.widgets import TinyMCE
-
 from app.models import Lesson, ExpectedAnswer
-from app.widgets import CodeMirrorWidget
+from app.widgets import CodeMirrorWidget, TinyMCEWidget
 
 
 class LessonAdminForm(forms.ModelForm):
-    instruction = forms.CharField(widget=TinyMCE())
+    instruction = forms.CharField(widget=TinyMCEWidget())
     initial_code = forms.CharField(widget=CodeMirrorWidget())
 
     class Meta:

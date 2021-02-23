@@ -2,6 +2,31 @@ from django import forms
 from django.core.serializers.json import json
 
 
+class TinyMCEWidget(forms.Textarea):
+
+    class Media:
+        js = ['tinymce/tinymce.min.js']
+
+    def __init__(self, **kwargs):
+        super(TinyMCEWidget, self).__init__()
+
+    def render(self, name, value, attrs=None, renderer=None):
+        field = super(TinyMCEWidget, self).render(name, value, attrs, renderer)
+        template = """%s
+            <script type="text/javascript">
+                tinymce.init({
+                    selector: "#%s",
+                    height: "560px",
+                    width: "780px",
+                    menubar: "",
+                    plugins: "lists link image charmap print preview anchor visualblocks code ",
+                    toolbar: "formatselect | bold italic underline | numlist bullist | link code",
+                });
+            </script>
+            """ % (field, attrs['id'])
+        return template
+
+
 class CodeMirrorWidget(forms.Textarea):
     config = {
         'indentUnit': 4,
