@@ -9,38 +9,47 @@
 
 
 {% block content %}
-<section id="id-lesson">
-    <div class="container-fluid">
+<div id="id-lesson">
+    <section id="id-lesson">
+        <div class="container-fluid">
 
-        <!-- Notification answer correct -->
-        <div v-if="correct" class="notification alert alert-success" role="alert">
-            <strong>Congratulations!</strong> Your answer is correct.
-        </div>
-        <!-- Notification answer incorrect -->
-        <div v-else-if="correct == false" class="notification alert alert-warning" role="alert">
-            <strong>Incorrect Answer!</strong> Your code answer is incorrect.
-        </div>
+            <!-- Notification answer correct -->
+            <div v-if="correct" class="notification alert alert-success" role="alert">
+                <strong>Congratulations!</strong> Your answer is correct.
+            </div>
+            <!-- Notification answer incorrect -->
+            <div v-else-if="correct == false" class="notification alert alert-warning" role="alert">
+                <strong>Incorrect Answer!</strong> Your code answer is incorrect.
+            </div>
 
-        <div class="row">
-            <div class="col-md-4 p-0">
-                <div class="navbar bg-secondary p-2 shadow">
-                    <h5>Instruction</h5>
+            <div class="row">
+                <div class="col-md-4 p-0">
+                    <div class="navbar bg-secondary p-2 shadow">
+                        <h5>Instruction</h5>
+                    </div>
+                    <div class="container-fluid section-scrollable">
+                        {{ lesson.instruction|safe }}
+                    </div>
                 </div>
-                <div class="container-fluid section-scrollable">
-                    {{ lesson.instruction|safe }}
+                <div class="col-md-4 p-0 section-codeeditor">
+                    <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
+                    <button v-on:click="submitCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> Run </button>
+                </div>
+                <div class="col-md-4 p-1">
+                    <iframe id="id-web-output" :src="urlOutput" class="section-web"></iframe>
                 </div>
             </div>
-            <div class="col-md-4 p-0 section-codeeditor">
-                <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
-                <button v-on:click="submitCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> Run </button>
-                <a v-if="nextLesson" :href="nextLesson" class="btn btn-success btn-lg ml-1 px-5"> Next Lesson </a>
-            </div>
-            <div class="col-md-4 p-1">
-                <iframe id="id-web-output" :src="urlOutput" class="section-web"></iframe>
-            </div>
+        </div>
+    </section>
+
+    <!-- Button prev & next -->
+    <div class="navbar fixed-bottom navbar-dark bg-dark text-light p-2 d-flex justify-content-center">
+        <div class="countainer">
+            <a :href="prevLesson" :class="prevButton"> Prev Lesson </a>
+            <a :href="nextLesson" :class="nextButton"> Next Lesson </a>
         </div>
     </div>
-</section>
+</div>
 {% endblock content %}
 
 
@@ -61,10 +70,27 @@ new Vue({
     data () {
         return {
             correct: null,
+            prevLesson: `{{ prev_lesson }}`,
             nextLesson: null,
             answerCode: `{{ lesson.initial_code|safe }}`,
             urlOutput: null
         }
+    },
+    computed: {
+        prevButton () {
+            if (this.prevLesson) {
+                return 'btn btn-secondary btn-md px-5'
+            } else {
+                return 'btn btn-secondary btn-md px-5 disabled'
+            }
+        },
+        nextButton () {
+            if (this.nextLesson) {
+                return 'btn btn-secondary btn-md px-5'
+            } else {
+                return 'btn btn-secondary btn-md px-5 disabled'
+            }
+        },
     },
     methods: {
         submitCode: function() {

@@ -9,42 +9,52 @@
 
 
 {% block content %}
-<section id="id-lesson">
-    <div class="container-fluid">
+<div id="id-lesson">
+    <section>
+        <div class="container-fluid">
 
-        <!-- Notification code success & answer correct -->
-        <div v-if="success && correct" class="notification alert alert-success" role="alert">
-            <strong>Congratulations!</strong> Your answer is correct.
-        </div>
-        <!-- Notification code success but answer incorrect -->
-        <div v-else-if="success && !correct" class="notification alert alert-warning" role="alert">
-            <strong>Incorrect Answer!</strong> Your code is running success, but the answer is incorrect.
-        </div>
-        <!-- Notification code error -->
-        <div v-else-if="success == false" class="notification alert alert-danger" role="alert">
-            <strong>Error!</strong> Your code is error.
-        </div>
+            <!-- Notification code success & answer correct -->
+            <div v-if="success && correct" class="notification alert alert-success" role="alert">
+                <strong>Congratulations!</strong> Your answer is correct.
+            </div>
+            <!-- Notification code success but answer incorrect -->
+            <div v-else-if="success && !correct" class="notification alert alert-warning" role="alert">
+                <strong>Incorrect Answer!</strong> Your code is running success, but the answer is incorrect.
+            </div>
+            <!-- Notification code error -->
+            <div v-else-if="success == false" class="notification alert alert-danger" role="alert">
+                <strong>Error!</strong> Your code is error.
+            </div>
 
-        <div class="row">
-            <div class="col-md-4 p-0">
-                <div class="navbar bg-secondary p-2 shadow">
-                    <h5>Instruction</h5>
+            <div class="row">
+                <div class="col-md-4 p-0">
+                    <div class="navbar bg-secondary p-2 shadow">
+                        <h5>Instruction</h5>
+                    </div>
+                    <div class="container-fluid section-scrollable">
+                        {{ lesson.instruction|safe }}
+                    </div>
                 </div>
-                <div class="container-fluid section-scrollable">
-                    {{ lesson.instruction|safe }}
+                <div class="col-md-4 p-0 section-codeeditor">
+                    <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
+                    <button v-on:click="submitCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> Run </button>
+                </div>
+                <div class="col-md-4 p-0">
+                    <textarea class="section-console" disabled>[% data.output %]</textarea>
                 </div>
             </div>
-            <div class="col-md-4 p-0 section-codeeditor">
-                <textarea id="id-code-editor" height="1000px" v-model="answerCode"></textarea>
-                <button v-on:click="submitCode()" class="btn btn-outline-success btn-lg ml-1 px-5"> Run </button>
-                <a v-if="nextLesson" :href="nextLesson" class="btn btn-success btn-lg ml-1 px-5"> Next Lesson </a>
-            </div>
-            <div class="col-md-4 p-0">
-                <textarea class="section-console" disabled>[% data.output %]</textarea>
-            </div>
+        </div>
+    </section>
+
+    <!-- Button prev & next -->
+    <div class="navbar fixed-bottom navbar-dark bg-dark text-light p-2 d-flex justify-content-center">
+        <div class="countainer">
+            <a :href="prevLesson" :class="prevButton"> Prev Lesson </a>
+            <a :href="nextLesson" :class="nextButton"> Next Lesson </a>
         </div>
     </div>
-</section>
+
+</div>
 {% endblock content %}
 
 
@@ -66,10 +76,27 @@ new Vue({
         return {
             success: null,
             correct: null,
+            prevLesson: `{{ prev_lesson }}`,
             nextLesson: null,
             answerCode: `{{ lesson.initial_code|safe }}`,
             data: {}
         }
+    },
+    computed: {
+        prevButton () {
+            if (this.prevLesson) {
+                return 'btn btn-secondary btn-md px-5'
+            } else {
+                return 'btn btn-secondary btn-md px-5 disabled'
+            }
+        },
+        nextButton () {
+            if (this.nextLesson) {
+                return 'btn btn-secondary btn-md px-5'
+            } else {
+                return 'btn btn-secondary btn-md px-5 disabled'
+            }
+        },
     },
     methods: {
         submitCode: function() {

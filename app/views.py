@@ -23,6 +23,14 @@ class LessonListView(ListView):
 class LessonDetailView(DetailView):
     model = Lesson
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        obj = self.get_object()
+        if obj.get_prev_lesson():
+            context['prev_lesson'] = reverse_lazy('learn_detail', args=[obj.get_prev_lesson().slug])
+
+        return context
+
     def get_template_names(self):
         if self.get_object().output_interface == 2:
             return 'lesson/web.html'
@@ -34,16 +42,16 @@ class ConsoleAnswerView(View):
     def post(self, request, slug):
         form_data = json.loads(request.body)
         output = exec_js(form_data['answer_code'])
-        obj_lesson = Lesson.objects.get(slug=slug)
-        output['correct'] = self.validate_answer(obj_lesson, output)
+        obj = Lesson.objects.get(slug=slug)
+        output['correct'] = self.validate_answer(obj, output)
 
-        if output['correct']:
-            output['next_lesson'] = reverse_lazy('learn_detail', args=[obj_lesson.get_next_lesson().slug])
+        if obj.get_next_lesson() and output['correct']:
+            output['next_lesson'] = reverse_lazy('learn_detail', args=[obj.get_next_lesson().slug])
 
         return JsonResponse(output)
 
-    def validate_answer(self, obj_lesson, answer_output):
-        expected_codes = obj_lesson.expectedanswer_set.values_list('expected_code')
+    def validate_answer(self, obj, answer_output):
+        expected_codes = obj.expectedanswer_set.values_list('expected_code')
         expected_output = []
 
         for code in expected_codes:
@@ -78,7 +86,7 @@ class WebAnswerView(View):
             'correct': validate_answer_code
         }
 
-        if validate_answer_code:
+        if obj.get_next_lesson() and output['correct']:
             output['next_lesson'] = reverse_lazy('learn_detail', args=[obj.get_next_lesson().slug])
 
         return JsonResponse(output)

@@ -43,6 +43,9 @@ class Lesson(BaseModel):
 
         super(Lesson, self).save(*args, **kwargs)
 
+    def get_prev_lesson(self):
+        return self.__class__.objects.active().filter(display_order__lt=self.display_order).first()
+
     def get_next_lesson(self):
         return self.__class__.objects.active().filter(display_order__gt=self.display_order).first()
 
