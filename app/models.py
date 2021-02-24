@@ -48,12 +48,14 @@ class Lesson(BaseModel):
 
 class ExtraStatic(BaseModel):
     STATIC_CHOICES = [
-        (1, 'Css'),
-        (2, 'Javascript'),
+        (1, 'CSS'),
+        (2, 'HTML'),
+        (3, 'Javascript'),
     ]
     lesson = models.ForeignKey(Lesson, related_name='extra_static', on_delete=models.CASCADE)
     static_type = models.PositiveSmallIntegerField(default=1, choices=STATIC_CHOICES)
-    url = models.URLField(max_length=255)
+    url = models.URLField(max_length=255, blank=True, null=True)
+    script = models.TextField(blank=True)
 
     display_order = models.PositiveIntegerField(default=0, help_text='If the static assets need to order.')
     objects = StaticManagerInteface()

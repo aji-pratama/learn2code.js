@@ -12,5 +12,8 @@ class StaticManagerInteface(models.Manager):
     def css(self):
         return self.get_queryset().filter(static_type=1)
 
-    def js(self):
+    def html(self):
         return self.get_queryset().filter(static_type=2)
+
+    def js(self):
+        return self.get_queryset().filter(static_type=3)

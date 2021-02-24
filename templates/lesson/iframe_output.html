@@ -12,6 +12,10 @@
     </head>
     <body>
 
+        {% for html in obj.extra_static.html %}
+            {{ html.script|safe }}
+        {% endfor %}
+
         {% for js in obj.extra_static.js %}
         <script type="text/javascript" src="{{ js.url }}"></script>
         {% endfor %}

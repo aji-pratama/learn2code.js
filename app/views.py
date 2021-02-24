@@ -1,4 +1,5 @@
 import json
+import re
 
 from django.http import JsonResponse
 from django.urls import reverse_lazy
@@ -94,12 +95,9 @@ class WebAnswerView(View):
         answer_code = form_data['answer_code']
         obj = Lesson.objects.get(slug=slug)
 
-        expected_codes = obj.expectedanswer_set.values_list('expected_code', flat=True)
-        validate_answer_code = (True if answer_code in expected_codes else False)
-
         output = {
             'answer_code': answer_code,
-            'correct': validate_answer_code
+            'correct': self.validate_answer(obj, answer_code)
         }
 
         if obj.get_next_lesson() and output['correct']:
@@ -112,3 +110,17 @@ class WebAnswerView(View):
         self.request.session['initial_code_%s' % slug] = answer_code
 
         return JsonResponse(output)
+
+    def validate_answer(self, obj, answer_code):
+        clean_answer_code = re.sub(r"[\n\t\s'\\']*", "", answer_code)
+        correct = False
+
+        clean_expected_codes = []
+        for expected_code in obj.expectedanswer_set.values_list('expected_code', flat=True):
+            expected_code = re.sub(r"[\n\t\s'\\']*", "", expected_code)
+            clean_expected_codes.append(expected_code)
+
+        if clean_answer_code in clean_expected_codes:
+            correct = True
+
+        return correct
