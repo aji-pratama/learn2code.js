@@ -10,16 +10,18 @@
 
 ## Installation
 
-- `pip install -r requirements.txt`
-- `./manage.py runserver`
+1. `pip install -r requirements.txt`
+2. `./manage.py runserver`
 
-Access `127.0.0.1:8000` or `localhost:8000` (default Django Development Server) via browser 
+Access [`127.0.0.1:8000`](http://127.0.0.1:8000) or [`localhost:8000`](http://localhost:8000) (default Django development server) via browser
 
 ## Admin
 
-Account for testing: 
+Account for testing:
 
-**username**: `pdso` 
+**url admin**: [`127.0.0.1:8000/admin/`](http://127.0.0.1:8000/admin/)
+
+**username**: `pdso`
 
 **password**: `practicaldso`
 
@@ -39,6 +41,15 @@ The Admin User can do:
 - If the code is running and correct, the Next button will be enabled and the user can take the next lesson.
 - The answer code will be store/save in the `session`, as long as the user has clicked the button `Run` So if the User leaves or closed the tab (browser), the ran `code` will not be lost.
 
+
+## Data Model
+
+[Lesson](https://www.notion.so/c8f5ba4335d149c99fb3359e53ed0e79)
+
+[ExtraStatic (for Web Output)](https://www.notion.so/631d82ea10f948958be73586de29b28f)
+
+[ExpectedAnswer](https://www.notion.so/fc3e4e3343b94352af0087a217a610e7)
+
 ## Validation System
 
 Code will validate and will send 3 message in popup notification:
@@ -49,7 +60,7 @@ Code will validate and will send 3 message in popup notification:
 
 ### Console Output
 
-In the console, the `answer_code` will execute using [Js2Py](https://github.com/PiotrDabkowski/Js2Py) and the `result` will validate, **is the result is in the** `expected_answers` that Admin defines in Admin Page? If correct it will show notification no. 3 
+In the console, the `answer_code` will execute using [Js2Py](https://github.com/PiotrDabkowski/Js2Py) and the `result` will validate, **is the result is in the** `expected_answers` that Admin defines in Admin Page? If correct it will show notification no. 3
 
 ### Web Output
 

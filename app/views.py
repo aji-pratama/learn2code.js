@@ -22,6 +22,7 @@ class LessonListView(ListView):
 
 class LessonDetailView(DetailView):
     model = Lesson
+    queryset = Lesson.objects.active()
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
