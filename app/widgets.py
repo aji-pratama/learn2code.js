@@ -7,9 +7,6 @@ class TinyMCEWidget(forms.Textarea):
     class Media:
         js = ['tinymce/tinymce.min.js']
 
-    def __init__(self, **kwargs):
-        super(TinyMCEWidget, self).__init__()
-
     def render(self, name, value, attrs=None, renderer=None):
         field = super(TinyMCEWidget, self).render(name, value, attrs, renderer)
         template = """%s
@@ -37,16 +34,16 @@ class CodeMirrorWidget(forms.Textarea):
     }
 
     class Media:
-        js = (
+        js = [
             'codemirror/lib/codemirror.js',
             'codemirror/mode/javascript/javascript.js',
-            'codemirror/mode/htmlmixed/htmlmixed.js',
-        )
+            'codemirror/mode/htmlmixed/htmlmixed.js'
+        ]
         css = {
-            'all': (
+            'all': [
                 'codemirror/lib/codemirror.css',
                 'codemirror/theme/material-palenight.css'
-            )
+            ]
         }
 
     def __init__(self, **kwargs):

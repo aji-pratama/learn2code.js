@@ -23,6 +23,7 @@ class Lesson(BaseModel):
     instruction = models.TextField()
     initial_code = models.TextField(blank=True)
 
+    is_correct = models.BooleanField(default=False)
     display_order = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)
     objects = ActiveManagerInteface()
@@ -38,6 +39,13 @@ class Lesson(BaseModel):
             self.slug = unique_slug_generator(self)
 
         super(Lesson, self).save(*args, **kwargs)
+
+    def is_available(self):
+        if self.__class__.objects.filter(is_correct=False).first() == self:
+            return True
+        elif self.is_correct:
+            return True
+        return False
 
     def get_prev_lesson(self):
         return self.__class__.objects.active().filter(display_order__lt=self.display_order).first()

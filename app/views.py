@@ -34,6 +34,12 @@ class LessonDetailView(DetailView):
                 args=[obj.get_prev_lesson().slug]
             )
 
+        if obj.get_next_lesson() and obj.is_correct is True:
+            context['next_lesson'] = reverse_lazy(
+                'learn_detail',
+                args=[obj.get_next_lesson().slug]
+            )
+
         context['initial_code'] = self.request.session.get(
             'initial_code_%s' % obj.slug,
             obj.initial_code
@@ -55,11 +61,12 @@ class ConsoleAnswerView(View):
         obj = Lesson.objects.get(slug=slug)
         output['correct'] = self.validate_answer(obj, output)
 
-        if obj.get_next_lesson() and output['correct']:
-            output['next_lesson'] = reverse_lazy(
-                'learn_detail',
-                args=[obj.get_next_lesson().slug]
-            )
+        if output['correct'] or obj.is_correct is True:
+            if obj.get_next_lesson():
+                output['next_lesson'] = reverse_lazy(
+                    'learn_detail',
+                    args=[obj.get_next_lesson().slug]
+                )
 
         # Store answered code to session
         self.request.session['initial_code_%s' % slug] = form_data['answer_code']
@@ -78,6 +85,8 @@ class ConsoleAnswerView(View):
         answer_correct = False
         if answer_output in expected_output:
             answer_correct = True
+            obj.is_correct = True
+            obj.save()
 
         return answer_correct
 
@@ -100,11 +109,12 @@ class WebAnswerView(View):
             'correct': self.validate_answer(obj, answer_code)
         }
 
-        if obj.get_next_lesson() and output['correct']:
-            output['next_lesson'] = reverse_lazy(
-                'learn_detail',
-                args=[obj.get_next_lesson().slug]
-            )
+        if output['correct'] or obj.is_correct is True:
+            if obj.get_next_lesson():
+                output['next_lesson'] = reverse_lazy(
+                    'learn_detail',
+                    args=[obj.get_next_lesson().slug]
+                )
 
         # Store answered code to session
         self.request.session['initial_code_%s' % slug] = answer_code
@@ -122,5 +132,7 @@ class WebAnswerView(View):
 
         if clean_answer_code in clean_expected_codes:
             correct = True
+            obj.is_correct = True
+            obj.save()
 
         return correct

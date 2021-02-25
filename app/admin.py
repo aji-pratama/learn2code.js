@@ -17,6 +17,6 @@ class ExtraStaticInline(admin.TabularInline):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'display_order']
+    list_display = ['title', 'slug', 'is_correct', 'display_order']
     inlines = [ExtraStaticInline, ExpectedAnswerInline]
     form = LessonAdminForm
