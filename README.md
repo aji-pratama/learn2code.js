@@ -13,6 +13,8 @@
 - `pip install -r requirements.txt`
 - `./manage.py runserver`
 
+Access `127.0.0.1:8000` or `localhost:8000` (default Django Development Server) via browser 
+
 ## Admin
 
 Account for testing: 
