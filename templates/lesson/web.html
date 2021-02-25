@@ -13,14 +13,7 @@
     <section id="id-lesson">
         <div class="container-fluid">
 
-            <!-- Notification answer correct -->
-            <div v-if="correct" class="notification alert alert-success" role="alert">
-                <strong>Congratulations!</strong> Your answer is correct.
-            </div>
-            <!-- Notification answer incorrect -->
-            <div v-else-if="correct == false" class="notification alert alert-warning" role="alert">
-                <strong>Incorrect Answer!</strong> Your code answer is incorrect.
-            </div>
+            <div :class="notif.notifClass" v-html="notif.text" role="alert"></div>
 
             <div class="row">
                 <div class="col-md-4 p-0">
@@ -69,10 +62,13 @@ new Vue({
     delimiters: ['[%', '%]'],
     data () {
         return {
-            correct: null,
             prevLesson: `{{ prev_lesson }}`,
             nextLesson: `{{ next_lesson }}`,
             answerCode: `{{ initial_code|safe }}`,
+            notif: {
+                notifClass: 'd-none',
+                text: ''
+            },
             urlOutput: null
         }
     },
@@ -93,6 +89,20 @@ new Vue({
         },
     },
     methods: {
+        notifPopup: function(correct) {
+            if (correct) {
+                this.notif.notifClass = 'notification alert alert-success'
+                this.notif.text = '<strong>Congratulations!</strong> Your answer is correct.'
+            } else if (!correct) {
+                this.notif.notifClass = 'notification alert alert-warning'
+                this.notif.text = '<strong>Incorrect Answer!</strong> Your code is running success, but the answer is incorrect.'
+            }
+
+            setTimeout(() => {
+                this.notif.notifClass = 'd-none'
+                this.notif.text = ''
+            }, 2000)
+        },
         submitCode: function() {
             let url = `{% url 'answer_web' lesson.slug %}`
             let data = {
@@ -107,12 +117,9 @@ new Vue({
             axios.post(url, data, config)
             .then((response) => {
                 this.urlOutput = url + '?code=' + encodeURIComponent(response.data.answer_code)
-                this.correct = response.data.correct
                 this.nextLesson = response.data.next_lesson
                 document.getElementById('id-web-output').contentWindow.location.reload();
-                setTimeout(() => {
-                    this.correct = null
-                }, 2000)
+                this.notifPopup(response.data.correct)
             })
             .catch(function (error) {
                 console.log(error);

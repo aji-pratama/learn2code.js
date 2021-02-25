@@ -13,18 +13,7 @@
     <section>
         <div class="container-fluid">
 
-            <!-- Notification code success & answer correct -->
-            <div v-if="success && correct" class="notification alert alert-success" role="alert">
-                <strong>Congratulations!</strong> Your answer is correct.
-            </div>
-            <!-- Notification code success but answer incorrect -->
-            <div v-else-if="success && !correct" class="notification alert alert-warning" role="alert">
-                <strong>Incorrect Answer!</strong> Your code is running success, but the answer is incorrect.
-            </div>
-            <!-- Notification code error -->
-            <div v-else-if="success == false" class="notification alert alert-danger" role="alert">
-                <strong>Error!</strong> Your code is error.
-            </div>
+            <div :class="notif.notifClass" v-html="notif.text" role="alert"></div>
 
             <div class="row">
                 <div class="col-md-4 p-0">
@@ -74,11 +63,13 @@ new Vue({
     delimiters: ['[%', '%]'],
     data () {
         return {
-            success: null,
-            correct: null,
             prevLesson: `{{ prev_lesson }}`,
             nextLesson: `{{ next_lesson }}`,
             answerCode: `{{ initial_code|safe }}`,
+            notif: {
+                notifClass: 'd-none',
+                text: ''
+            },
             data: {}
         }
     },
@@ -99,6 +90,23 @@ new Vue({
         },
     },
     methods: {
+        notifPopup: function(success, correct) {
+            if (success && correct) {
+                this.notif.notifClass = 'notification alert alert-success'
+                this.notif.text = '<strong>Congratulations!</strong> Your answer is correct.'
+            } else if (success && !correct) {
+                this.notif.notifClass = 'notification alert alert-warning'
+                this.notif.text = '<strong>Incorrect Answer!</strong> Your code is running success, but the answer is incorrect.'
+            } else if (!success){
+                this.notif.notifClass = 'notification alert alert-danger'
+                this.notif.text = '<strong>Error!</strong> Your code is error.'
+            }
+
+            setTimeout(() => {
+                this.notif.notifClass = 'd-none'
+                this.notif.text = ''
+            }, 2000)
+        },
         submitCode: function() {
             let url = `{% url 'answer_console' lesson.slug %}`
             let data = {
@@ -114,13 +122,8 @@ new Vue({
             axios.post(url, data, config)
             .then((response) => {
                 this.data = response.data
-                this.success = response.data.success
-                this.correct = response.data.correct
+                this.notifPopup(response.data.success, response.data.correct)
                 this.nextLesson = response.data.next_lesson
-                setTimeout(() => {
-                    this.success = null
-                    this.correct = null
-                }, 2000)
             })
             .catch(function (error) {
                 console.log(error);
