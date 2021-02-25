@@ -42,11 +42,8 @@ class Lesson(BaseModel):
         super(Lesson, self).save(*args, **kwargs)
 
     def is_available(self):
-        if self.__class__.objects.filter(is_correct=False).first() == self:
+        if self.is_correct or (self == self.__class__.objects.filter(is_correct=False).first()):
             return True
-        elif self.is_correct:
-            return True
-        return False
 
     def get_prev_lesson(self):
         prev_obj = self.__class__.objects.active().filter(display_order__lt=self.display_order).last()
