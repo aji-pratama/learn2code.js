@@ -4,9 +4,9 @@
 
 - Backend: `Django`
 - Frontend: `VueJS` (Instance)
-- Database: `SQLite`
+- Database: `SQLite` (DB file included for testing purpose)
 - Styling/CSS: [Argon Design System](https://www.creative-tim.com/product/argon-design-system) by CreativeTim
-- Intrepreter: [Js2Py](https://github.com/PiotrDabkowski/Js2Py)
+- Javascript Intrepreter: [Js2Py](https://github.com/PiotrDabkowski/Js2Py) by Piotr Dabkowski
 
 ## Installation
 
@@ -26,7 +26,7 @@ The Admin User can do:
 - Add new Lesson
 - Create expected codes
 - Add additional static assets (HTML, CSS, Javascript) ***for Web Output**
-- Reorder Lessons
+- Sort the lessons
 
 ## Apps
 
