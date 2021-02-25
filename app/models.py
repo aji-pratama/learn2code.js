@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from app.managers import ActiveManagerInteface, StaticManagerInteface
 from app.utils import unique_slug_generator
@@ -48,10 +49,14 @@ class Lesson(BaseModel):
         return False
 
     def get_prev_lesson(self):
-        return self.__class__.objects.active().filter(display_order__lt=self.display_order).first()
+        prev_obj = self.__class__.objects.active().filter(display_order__lt=self.display_order).last()
+        if prev_obj is not None:
+            return reverse('learn_detail', args=[prev_obj.slug])
 
     def get_next_lesson(self):
-        return self.__class__.objects.active().filter(display_order__gt=self.display_order).first()
+        next_obj = self.__class__.objects.active().filter(display_order__gt=self.display_order).first()
+        if next_obj is not None and self.is_correct:
+            return reverse('learn_detail', args=[next_obj.slug])
 
 
 class ExtraStatic(BaseModel):

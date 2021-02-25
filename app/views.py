@@ -2,7 +2,6 @@ import json
 import re
 
 from django.http import JsonResponse
-from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.generic import (
@@ -29,16 +28,10 @@ class LessonDetailView(DetailView):
         obj = self.get_object()
 
         if obj.get_prev_lesson():
-            context['prev_lesson'] = reverse_lazy(
-                'learn_detail',
-                args=[obj.get_prev_lesson().slug]
-            )
+            context['prev_lesson'] = obj.get_prev_lesson()
 
         if obj.get_next_lesson() and obj.is_correct is True:
-            context['next_lesson'] = reverse_lazy(
-                'learn_detail',
-                args=[obj.get_next_lesson().slug]
-            )
+            context['next_lesson'] = obj.get_next_lesson()
 
         context['initial_code'] = self.request.session.get(
             'initial_code_%s' % obj.slug,
@@ -61,12 +54,8 @@ class ConsoleAnswerView(View):
         obj = Lesson.objects.get(slug=slug)
         output['correct'] = self.validate_answer(obj, output)
 
-        if output['correct'] or obj.is_correct is True:
-            if obj.get_next_lesson():
-                output['next_lesson'] = reverse_lazy(
-                    'learn_detail',
-                    args=[obj.get_next_lesson().slug]
-                )
+        if output['correct'] or obj.get_next_lesson():
+            output['next_lesson'] = obj.get_next_lesson()
 
         # Store answered code to session
         self.request.session['initial_code_%s' % slug] = form_data['answer_code']
@@ -109,12 +98,8 @@ class WebAnswerView(View):
             'correct': self.validate_answer(obj, answer_code)
         }
 
-        if output['correct'] or obj.is_correct is True:
-            if obj.get_next_lesson():
-                output['next_lesson'] = reverse_lazy(
-                    'learn_detail',
-                    args=[obj.get_next_lesson().slug]
-                )
+        if output['correct'] or obj.get_next_lesson():
+            output['next_lesson'] = obj.get_next_lesson()
 
         # Store answered code to session
         self.request.session['initial_code_%s' % slug] = answer_code
