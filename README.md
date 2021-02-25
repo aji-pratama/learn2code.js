@@ -15,7 +15,7 @@
 
 ## Admin
 
-The account for testing: 
+Account for testing: 
 
 **username**: `pdso` 
 
@@ -30,7 +30,7 @@ The Admin User can do:
 
 ## Apps
 
-- The apps have 2 output type
+- The Apps have 2 output type
     - **console output**
     - **web output**
 - The `answer_code` need to click button `Run` to validate the `answer_code`
