@@ -1,5 +1,7 @@
 # Documentation
 
+Learn2Code.js is Interactive Coding Learning that provides user to learn JavaScript
+
 ## Technologies
 
 - Backend: `Django`
