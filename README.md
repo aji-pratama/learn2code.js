@@ -65,3 +65,51 @@ In the console, the `answer_code` will execute using [Js2Py](https://github.com/
 ### Web Output
 
 In the web output, the method uses to validate it based on `answer_code` without compiling. So, if **the code is in the** `expected_answers` it will correct.
+
+
+
+
+_____
+
+
+
+
+# Demo Screenshot
+
+### 1 Home Page
+
+![Home Page](./assets/static/demo/home_page.png)
+
+### 2. Console Output Error
+
+![Console Error](./assets/static/demo/console_error.png)
+
+### 3. Console Output Incorrect
+
+![Console Incorrect](./assets/static/demo/console_incorrect.png)
+
+### 4. Console Output Correct
+![Console Correct](./assets/static/demo/console_correct.png)
+
+### 5. Web Output Incorrect
+![Web Incorrect](./assets/static/demo/web_incorrect.png)
+
+### 6. Web Output Correct
+![Web Correct](./assets/static/demo/web_correct.png)
+
+### 7. Last Lesson
+
+In las lesson, if user corrected answer, then the next button still disabled because no next lesson
+
+![Las Lesson](./assets/static/demo/last_lesson.png)
+
+
+### 8. Home Page All Correct
+
+When all Lesson corrected, then all button for navigate to lesson will enabled
+
+![Web Correct](./assets/static/demo/home_page_all_correct.png)
+
+
+
+
