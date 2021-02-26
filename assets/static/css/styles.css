@@ -3,14 +3,14 @@ textarea {
 }
 
 .CodeMirror {
-    height: 81.5vh;
+    height: 81vh;
     width: 100%;
     font-size: 1.275rem;
     z-index: 6;
 }
 
 .section-scrollable {
-    height: 88vh;
+    height: 87vh;
     overflow-y: scroll;
 }
 
@@ -26,7 +26,7 @@ textarea {
     background-color: black;
     color: white;
     padding: 1rem;
-    height: 88vh;
+    height: 87vh;
     border: none;
 }
 
